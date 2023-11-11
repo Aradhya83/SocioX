@@ -78,7 +78,53 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
     return { posts, isNext };
   }
 
-  export async function fetchThreadById(threadId: string) {
+export async function deleteThread(id: string, path: string): Promise<void> {
+  try {
+    connectToDB();
+
+    
+    const mainThread = await Thread.findById(id).populate("author community");
+
+    if (!mainThread) {
+      throw new Error("Thread not found");
+    }
+
+  
+    const descendantThreads = await fetchAllChildThreads(id);
+
+   
+    const descendantThreadIds = [
+      id,
+      ...descendantThreads.map((thread) => thread._id),
+    ];
+
+   
+    const uniqueAuthorIds = new Set(
+      [
+        ...descendantThreads.map((thread) => thread.author?._id?.toString()), // Use optional chaining to handle possible undefined values
+        mainThread.author?._id?.toString(),
+      ].filter((id) => id !== undefined)
+    );
+
+   
+
+    await Thread.deleteMany({ _id: { $in: descendantThreadIds } });
+
+    
+    await User.updateMany(
+      { _id: { $in: Array.from(uniqueAuthorIds) } },
+      { $pull: { threads: { $in: descendantThreadIds } } }
+    );
+
+    
+    revalidatePath(path);
+  } catch (error: any) {
+    throw new Error(`Failed to delete thread: ${error.message}`);
+  }
+}
+
+  
+export async function fetchThreadById(threadId: string) {
     connectToDB();
   
     try {
