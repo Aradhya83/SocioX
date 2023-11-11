@@ -105,7 +105,7 @@ export async function deleteThread(id: string, path: string): Promise<void> {
   try {
     connectToDB();
 
-    const mainThread = await Thread.findById(id).populate("author community");
+    const mainThread = await Thread.findById(id).populate("author");
 
     if (!mainThread) {
       throw new Error("Thread not found");
