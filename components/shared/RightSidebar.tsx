@@ -17,7 +17,7 @@ const RightSidebar: React.FC = () =>{
   <p>Shape your world with words! Express your unique thoughts, ignite connections, and be part of a global tapestry of ideas. Your voice matters – start a conversation, inspire, and make an impact through the written word.</p>
 </div>
             </div>
-            <div className="flex flex-1 flex-col justify-start ml-8">
+            <div className="flex flex-1 flex-col justify-start ml-10">
 <h3 className="text-heading4-medium text-light-1"> <Image style={styles} src={yourGif} alt="Your GIF" /></h3>
             </div>
         </section>
