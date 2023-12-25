@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import yourGif from '../shared/gifs/ezgif.com-crop (3) (1).gif';
+import yourGif from '../shared/gifs/ezgif.com-crop (3).gif';
 
 const RightSidebar: React.FC = () =>{
     const styles: React.CSSProperties = {
